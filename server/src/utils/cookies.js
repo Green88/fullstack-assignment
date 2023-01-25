@@ -3,14 +3,14 @@ const getCookiesObj = (cookie) => {
     const cookiesArray = cookie.split(';');
     cookiesArray.forEach((cookie) => {
         const [key, value] = cookie.trim().split('=');
-        cookies[key] = decodeURIComponent(value);
+        cookies[key] = value;
     });
     return cookies;
 }
 
-const getUserCookieEmail = (decodedCookie) => {
-    console.log(decodedCookie.j);
-    const userCookieObj = JSON.parse(decodedCookie);
+const getUserCookieEmail = (c) => {
+    console.log(decodeURIComponent(c));
+    const userCookieObj = JSON.parse(decodeURIComponent(c));
     return userCookieObj.j.email;
 };
 

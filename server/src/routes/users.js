@@ -34,19 +34,21 @@ router.post('/login', (req, res, next) => {
 router.get('/jobs', (req, res, next) => {
     const { cookie } = req.headers;
     const cookies = getCookiesObj(cookie);
-    // const { _user_session: userSession} = cookies;
-    // if (!userSession) {
-    //     res.status(401).send('Missing login credentials');
-    //     return;
-    // }
+    const { _user_session: userSession} = cookies;
+    if (!userSession) {
+        res.status(401).send('Missing login credentials');
+        return;
+    }
 
-    // const userEmail = getUserCookieEmail(userSession);
-    // const foundUser = USERS.find(item => item.email === userEmail);
-    // if (!foundUser) {
-    //     res.status(404).send(`User with email ${email} does not exist`);
-    //     return;
-    // }
-    // const jobs = OPEN_JOBS.filter(job => foundUser.departments.includes(job.department));
+    // couldn't parse the email... so returning all the jobs, although the logic using email should work
+    // if we send res.status(200).send({jobs});
+    const userEmail = getUserCookieEmail(userSession);
+    const foundUser = USERS.find(item => item.email === userEmail);
+    if (!foundUser) {
+        res.status(404).send(`User with email ${email} does not exist`);
+        return;
+    }
+    const jobs = OPEN_JOBS.filter(job => foundUser.departments.includes(job.department));
 
     res.status(200).send({jobs: OPEN_JOBS});
 });
